@@ -32,7 +32,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: 'http://localhost:8081',
+            value: 'https://medisheild-react-native-expo.vercel.app',
           },
           {
             key: 'Access-Control-Allow-Methods',
