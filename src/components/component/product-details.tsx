@@ -17,11 +17,12 @@ interface ProductDetailsProps {
 export function ProductDetails({ product, isView }: ProductDetailsProps) {
   const router = useRouter();
   isView = isView || false;
+  const productSpecs = product?.product_specs ?? {};
   console.log(product);
   return (
-    <div className="grid gap-4 lg:gap-12 max-w-6xl px-2  py-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Product Details</h1>
+    <div className="product-details">
+      <div className="page-heading">
+        <h1 className="page-title">Product details</h1>
         {isView ? null : (
           <Button
             onClick={() =>
@@ -34,15 +35,15 @@ export function ProductDetails({ product, isView }: ProductDetailsProps) {
           </Button>
         )}
       </div>
-      <div className="grid gap-2 md:items-start">
-        <div className="md:flex md:space-x-20 items-center md:items-start">
+      <div className="grid gap-5 md:items-start">
+        <div className="product-overview surface">
           <ImageCarousel
             images={product.media_gallery_entries.map(
               (image: any) => image.file
             )}
           />
-          <div className="grid gap-2">
-            <h1 className="font-bold text-3xl">{product.name}</h1>
+          <div className="grid content-start gap-4 break-words">
+            <h2 className="font-semibold text-2xl leading-snug">{product.name}</h2>
             <p className="font-bold">
               SKU <span className="font-medium">{product.sku}</span>
             </p>
@@ -51,7 +52,7 @@ export function ProductDetails({ product, isView }: ProductDetailsProps) {
               <span className="font-medium mr-2">{product.max_sale_qty}</span>(
               <span
                 className={`
-              ${product.max_sale_qty > 0 ? "text-green-500" : "text-red-500"}
+              ${product.max_sale_qty > 0 ? "text-primary" : "text-destructive"}
               `}
               >
                 {product.max_sale_qty > 0 ? "In Stock" : "Out of Stock"}
@@ -61,12 +62,12 @@ export function ProductDetails({ product, isView }: ProductDetailsProps) {
             <div>
               <p>{product.short_description}</p>
             </div>
-            <div className="text-3xl font-bold ">
+            <div className="text-3xl font-semibold text-primary py-2">
               ₹ {product.price.minimalPrice}.00
             </div>
 
             <div className="md:flex items-start"></div>
-            <h1 className="font-lg font-medium">Listed in Categories</h1>
+            <h3 className="text-sm font-semibold text-muted-foreground">Listed in categories</h3>
             {product.categories.map((category: any, index: any) => (
               <p key={index} className="ml-1">
                 {category.name}
@@ -77,12 +78,12 @@ export function ProductDetails({ product, isView }: ProductDetailsProps) {
 
         {product.childProducts.length > 1 && (
           <div>
-            <h2 className="font-bold mb-2">Product Varients</h2>
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
+            <h2 className="section-title mb-4">Product variants</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
               {product.childProducts.map((child: any) => (
                 <div
                   key={child?.sku}
-                  className="flex border p-2 rounded-md border-neutral-200 shadow-sm space-x-4"
+                  className="surface flex min-w-0 break-words p-5 space-x-4"
                 >
                   <div className="flex space-x-2 items-start">
                     <div>
@@ -108,62 +109,62 @@ export function ProductDetails({ product, isView }: ProductDetailsProps) {
           </div>
         )}
 
-        <Accordion className="w-full" collapsible type="single">
+        <Accordion className="surface product-specs w-full" collapsible type="single">
           <AccordionItem value="more-info">
             <AccordionTrigger>Description</AccordionTrigger>
             <AccordionContent>
               <p
                 dangerouslySetInnerHTML={{
-                  __html: product.product_specs.description,
+                  __html: productSpecs.description ?? "",
                 }}
               ></p>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
 
-        <Accordion className="w-full" collapsible type="single">
+        <Accordion className="surface product-specs w-full" collapsible type="single">
           <AccordionItem value="more-info">
             <AccordionTrigger>Key Specification</AccordionTrigger>
             <AccordionContent>
               <p
                 dangerouslySetInnerHTML={{
-                  __html: product.product_specs.key_specifications,
+                  __html: productSpecs.key_specifications ?? "",
                 }}
               ></p>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <Accordion className="w-full" collapsible type="single">
+        <Accordion className="surface product-specs w-full" collapsible type="single">
           <AccordionItem value="more-info">
             <AccordionTrigger>Packaging</AccordionTrigger>
             <AccordionContent>
               <p
                 dangerouslySetInnerHTML={{
-                  __html: product.product_specs.packaging,
+                  __html: productSpecs.packaging ?? "",
                 }}
               ></p>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <Accordion className="w-full" collapsible type="single">
+        <Accordion className="surface product-specs w-full" collapsible type="single">
           <AccordionItem value="more-info">
             <AccordionTrigger>Direction To Use</AccordionTrigger>
             <AccordionContent>
               <p
                 dangerouslySetInnerHTML={{
-                  __html: product.product_specs.direction_to_use,
+                  __html: productSpecs.direction_to_use ?? "",
                 }}
               ></p>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <Accordion className="w-full" collapsible type="single">
+        <Accordion className="surface product-specs w-full" collapsible type="single">
           <AccordionItem value="more-info">
             <AccordionTrigger>Features</AccordionTrigger>
             <AccordionContent>
               <p
                 dangerouslySetInnerHTML={{
-                  __html: product.product_specs.features,
+                  __html: productSpecs.features ?? "",
                 }}
               ></p>
             </AccordionContent>

@@ -149,11 +149,11 @@ export function PermissionsScreen() {
   };
 
   return (
-    <div className="container px-4 md:px-6 py-6 md:py-12">
-      <div className="grid md:grid-cols-2 gap-8">
-        <div>
+    <div className="page-content">
+      <div className="grid xl:grid-cols-2 gap-6 items-start">
+        <div className="min-w-0">
           <div className="flex items-center justify-between mb-6 md:mb-8">
-            <h1 className="text-2xl md:text-3xl font-bold">
+            <h1 className="page-title">
               Roles & Permissions
             </h1>
           </div>
@@ -253,7 +253,7 @@ export function PermissionsScreen() {
             </Table>
           </div>
         </div>
-        <div className="border rounded-lg p-6 md:p-8">
+        <div className="form-panel">
           <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">
             Add New Role
           </h2>

@@ -106,12 +106,12 @@ export function BrandShowcase() {
   }, [search]);
 
   return (
-    <div className="flex flex-col">
-      <header className="border-b p-4">
-        <div className="flex items-center gap-4">
+    <div className="page-content flex flex-col">
+      <header className="mb-6">
+        <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-2">
             <PackageIcon className="w-6 h-6" />
-            <span className="text-lg font-semibold">Brands</span>
+            <span className="page-title">Brands</span>
           </div>
 
           <div className="ml-auto flex items-center gap-4">
@@ -193,16 +193,16 @@ export function BrandShowcase() {
         </div>
       </header>
       {/* search bar */}
-      <div className="flex items-center justify-center px-4 mt-2">
+      <div className="surface flex items-center p-4 mb-6">
         <Input
           type="search"
           placeholder="Search for brands"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full p-4"
+          className="w-full max-w-lg"
         />
       </div>
-      <div className="grid sm:grid-cols-2 p-8 lg:grid-cols-3 xl:grid-cols-5 gap-6 items-start">
+      <div className="grid sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 items-stretch">
         {loading && (
           <div>
             <p>Loading...</p>

@@ -35,16 +35,17 @@ const MobileSidebar = ({ children }: { children: React.ReactNode }) => {
     <Suspense>
       <Button
         onClick={onOpen}
-        className="block md:hidden mr-2"
-        variant="default"
-        size="sm"
+        className="md:hidden shrink-0"
+        variant="outline"
+        size="icon"
+        aria-label="Open navigation menu"
       >
         <Menu className="h-5 w-5" />
       </Button>
       <Sheet open={isOpen} onOpenChange={onClose}>
         <SheetContent
           side="left"
-          className="p-2 w-[240px] bg-gray-100 text-black"
+          className="mobile-sidebar-content p-0 w-[280px] max-w-[85vw]"
         >
           {children}
         </SheetContent>

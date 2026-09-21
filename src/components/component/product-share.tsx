@@ -27,7 +27,7 @@ const ProductShare = ({ params: { slug } }: any) => {
 
   return (
     <>
-      <div className="p-8 h-full flex justify-center">
+      <div className="page-content min-h-screen flex justify-center">
         {!loading ? (
           <ProductDetails key={product.sku} isView={true} product={product} />
         ) : (

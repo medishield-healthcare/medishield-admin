@@ -86,7 +86,7 @@ export function VarientsAddTable({
 
   return (
     <div className="bg-white dark:bg-gray-950 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+      <div className="px-4 sm:px-6 py-4 border-b flex flex-wrap gap-3 items-center justify-between">
         <h3 className="text-lg font-semibold">Product Variants</h3>
         <Button
           onClick={() => {

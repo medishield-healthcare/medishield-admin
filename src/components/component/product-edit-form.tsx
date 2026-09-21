@@ -328,8 +328,8 @@ export function ProductEditForm({ defaultValues }: ProductEditFormProps) {
 
   return (
     <div className="flex flex-col">
-      <div className="mx-3">
-        <Card className="max-w-4xl mx-auto">
+      <div className="min-w-0">
+        <Card className="max-w-5xl mx-auto">
           <CardHeader>
             <CardTitle>Add Product</CardTitle>
             <CardDescription>Add a product in your catalog.</CardDescription>
@@ -599,7 +599,7 @@ export function ProductEditForm({ defaultValues }: ProductEditFormProps) {
                               variant="outline"
                               role="combobox"
                               className={cn(
-                                "w-[250px] overflow-auto ml-4 justify-between",
+                                "w-full sm:w-[250px] min-w-0 justify-between whitespace-normal text-left",
                                 !field.value && "text-muted-foreground"
                               )}
                             >
@@ -612,7 +612,7 @@ export function ProductEditForm({ defaultValues }: ProductEditFormProps) {
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
-                        <PopoverContent className="w-[250px]  p-1">
+                        <PopoverContent className="w-[250px] max-w-[calc(100vw-2rem)] p-1">
                           <Command>
                             <CommandInput placeholder="Search brands..." />
                             <CommandEmpty>No brands found.</CommandEmpty>
@@ -668,11 +668,11 @@ export function ProductEditForm({ defaultValues }: ProductEditFormProps) {
                 />
                 {category.length > 0 && (
                   <>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       {category.map((cat: any, index) => (
                         <Badge
                           key={index}
-                          className="bg-blue-500 text-white text-md"
+                          className="bg-secondary text-primary text-sm"
                         >
                           <span>{cat.name}</span>
                           <XIcon

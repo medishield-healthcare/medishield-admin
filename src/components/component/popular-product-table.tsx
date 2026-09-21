@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useRouter } from "next/navigation";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, ChevronDown, MoreHorizontal, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   ColumnDef,
@@ -43,9 +43,10 @@ interface props {
   data: any;
   columns: any;
   loading: boolean;
+  embedded?: boolean;
 }
 
-export default function PopularProductTable({ data, columns, loading }: props) {
+export default function PopularProductTable({ data, columns, loading, embedded = false }: props) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -72,20 +73,23 @@ export default function PopularProductTable({ data, columns, loading }: props) {
   });
 
   return (
-    <div className="w-full p-5">
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter by name..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <div></div>
+    <div className={embedded ? "table-panel table-panel-embedded w-full" : "table-panel w-full"}>
+      <div className="table-toolbar">
+        <div className="relative w-full sm:max-w-sm">
+          <Search aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search by product name..."
+            aria-label="Filter products by name"
+            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("name")?.setFilterValue(event.target.value)
+            }
+            className="w-full pl-9"
+          />
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
+            <Button variant="outline" className="sm:ml-auto">
               Columns <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -110,7 +114,7 @@ export default function PopularProductTable({ data, columns, loading }: props) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="overflow-hidden rounded-lg border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -151,7 +155,7 @@ export default function PopularProductTable({ data, columns, loading }: props) {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-40 text-center text-muted-foreground"
                 >
                   Loading...
                 </TableCell>
@@ -160,7 +164,7 @@ export default function PopularProductTable({ data, columns, loading }: props) {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-40 text-center text-muted-foreground"
                 >
                   No results.
                 </TableCell>
@@ -169,7 +173,7 @@ export default function PopularProductTable({ data, columns, loading }: props) {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="table-pagination">
         <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.

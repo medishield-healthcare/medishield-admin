@@ -33,7 +33,7 @@ const Page = ({ params: { slug } }: any) => {
         <title>{product.name}</title>
         <meta name="description" content={product.short_description} />
       </head>
-      <div className="p-8">
+      <div className="page-content">
         {!loading ? (
           <ProductDetails key={product.sku} product={product} />
         ) : (

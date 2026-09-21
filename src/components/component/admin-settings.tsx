@@ -251,11 +251,11 @@ export function AdminSettings() {
   };
 
   return (
-    <div className="container mx-auto py-8 px-4 md:px-6">
-      <h1 className="text-2xl font-bold mb-6">Admin Settings</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="page-content">
+      <h1 className="page-title mb-7">Admin Settings</h1>
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 [&>div]:form-panel">
         <div>
-          <h2 className="text-xl font-bold mb-4">Add New Admin</h2>
+          <h2 className="section-title mb-5">Add New Admin</h2>
           <form onSubmit={handleCreateAdmin} className="space-y-4">
             <div>
               <Label htmlFor="name">Name</Label>
@@ -320,7 +320,7 @@ export function AdminSettings() {
           </form>
         </div>
         <div>
-          <h2 className="text-xl font-bold mb-4">Existing Admins</h2>
+          <h2 className="section-title mb-5">Existing Admins</h2>
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>

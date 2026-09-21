@@ -34,11 +34,11 @@ const page = ({ params: { slug } }: any) => {
     short_description: product!.short_description,
     max_sale_qty: product!.max_sale_qty,
     product_specs: {
-      description: product!.product_specs?.description,
-      key_specifications: product!.product_specs?.key_specifications,
-      packaging: product!.product_specs?.packaging,
-      direction_to_use: product!.product_specs?.direction_to_use,
-      features: product!.product_specs?.features,
+      description: product!.product_specs?.description ?? "",
+      key_specifications: product!.product_specs?.key_specifications ?? "",
+      packaging: product!.product_specs?.packaging ?? "",
+      direction_to_use: product!.product_specs?.direction_to_use ?? "",
+      features: product!.product_specs?.features ?? "",
     },
     thumbnail_url: product!.thumbnail_url,
     media_gallery_entries: product?.media_gallery_entries?.map(
@@ -181,11 +181,12 @@ const page = ({ params: { slug } }: any) => {
   return (
     <>
       {loading ? (
-        <p className="p-8">Loading product...</p>
+        <p className="page-content">Loading product...</p>
       ) : (
-        <div className="p-8">
+        <div className="page-content">
           <ProductUpdate
             id={product._id}
+            isZohoProduct={Boolean(product?.zohoProductId)}
             manufacturer={product!.manufacturer}
             defaultValues={values}
             handleRemoveChildProduct={handleRemoveChildProduct}

@@ -187,9 +187,9 @@ export function PromotionalBanners() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 md:py-12">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Promotion Banners</h1>
+    <div className="page-content">
+      <div className="page-heading">
+        <h1 className="page-title">Promotion Banners</h1>
         <Dialog>
           <DrawerTrigger asChild>
             <Button>
@@ -285,10 +285,10 @@ export function PromotionalBanners() {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
         {!loading && banners.length !== 0 ? (
           banners.map((banner: any) => (
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div className="surface overflow-hidden">
               <img
                 alt="Banner Image"
                 className="w-full h-40 object-cover"
@@ -302,7 +302,7 @@ export function PromotionalBanners() {
               />
               <div className="p-4">
                 <h3 className="text-lg font-bold">{banner?.title}</h3>
-                <p className="text-gray-500">product attached: {banner?.id}</p>
+                <p className="text-sm text-muted-foreground break-words">product attached: {banner?.id}</p>
                 <div className="flex items-center justify-between mt-4">
                   <div className="flex items-center gap-2">
                     <Dialog>

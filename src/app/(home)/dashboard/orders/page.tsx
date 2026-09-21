@@ -34,8 +34,8 @@ export default function Page() {
     .reverse();
 
   return (
-    <div>
-      <h1 className="text-2xl ml-8 mt-8 font-semibold">ALL Orders</h1>
+    <div className="page-content">
+      <div className="page-heading"><div><h1 className="page-title">Orders</h1><p className="page-description">Track, filter, and manage every customer order.</p></div></div>
       <Dashboard loading={loading} data={data} columns={columns} />
     </div>
   );

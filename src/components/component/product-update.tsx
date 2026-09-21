@@ -148,6 +148,7 @@ const formSchema = z.object({
 interface ProductEditFormProps {
   id: string;
   defaultValues?: z.infer<typeof formSchema>;
+  isZohoProduct?: boolean;
   child: any;
   manufacturer: any;
   setChild: any;
@@ -158,6 +159,7 @@ interface ProductEditFormProps {
 export function ProductUpdate({
   defaultValues,
   id,
+  isZohoProduct = false,
   child,
   setChild,
   handleAddChildProduct,
@@ -377,8 +379,8 @@ export function ProductUpdate({
 
   return (
     <div className="flex flex-col">
-      <div className="mx-3">
-        <Card className="max-w-4xl mx-auto">
+      <div className="min-w-0">
+        <Card className="max-w-5xl mx-auto">
           <CardHeader>
             <CardTitle>Add or Update Product</CardTitle>
             <CardDescription>
@@ -414,7 +416,12 @@ export function ProductUpdate({
                     <FormItem>
                       <FormLabel>SKU</FormLabel>
                       <FormControl>
-                        <Input placeholder="#XXXXXXXSKU" {...field} />
+                        <Input
+                          placeholder="#XXXXXXXSKU"
+                          readOnly={isZohoProduct}
+                          aria-readonly={isZohoProduct}
+                          {...field}
+                        />
                       </FormControl>
                       <FormDescription>
                         Enter Product SKU (Stock Keeping Unit)
@@ -465,6 +472,8 @@ export function ProductUpdate({
                         <Input
                           type="number"
                           placeholder="Price of the product in INR"
+                          readOnly={isZohoProduct}
+                          aria-readonly={isZohoProduct}
                           {...field}
                         />
                       </FormControl>
@@ -516,6 +525,8 @@ export function ProductUpdate({
                         <Input
                           type="number"
                           placeholder="No. of products in stock"
+                          readOnly={isZohoProduct}
+                          aria-readonly={isZohoProduct}
                           {...field}
                         />
                       </FormControl>
@@ -571,7 +582,7 @@ export function ProductUpdate({
                       <FormLabel>Images (Max 8 Images)</FormLabel>
                       <FormControl>
                         <div className="space-y-2">
-                          <div className="flex space-x-1 pb-5 border-b border-gray-800">
+                          <div className="flex flex-wrap gap-2 pb-5 border-b">
                             <Input
                               type="text"
                               id="image"
@@ -737,7 +748,7 @@ export function ProductUpdate({
                         .map((cat: any, index: any) => (
                           <Badge
                             key={index}
-                            className="bg-blue-500 text-white text-md"
+                            className="bg-secondary text-primary text-sm"
                           >
                             <span>{cat.name}</span>
                             <XIcon
@@ -864,7 +875,7 @@ export function ProductUpdate({
 
                     handleAddChildProduct();
                   }}
-                  className="bg-blue-500 hover:bg-blue-600 text-white w-full mt-5"
+                  className="w-full mt-5"
                 >
                   Add Child Product (Variant)
                 </Button>
@@ -969,7 +980,7 @@ export function ProductUpdate({
                             form.setValue("childProducts", newchild);
                             console.log(form.getValues("childProducts"));
                           }}
-                          className="bg-red-500 hover:bg-red-600 text-white w-full mt-5"
+                          className="bg-destructive hover:bg-destructive/90 text-destructive-foreground w-full mt-5"
                         >
                           Remove
                         </Button>

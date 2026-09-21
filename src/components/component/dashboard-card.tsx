@@ -1,3 +1,5 @@
+import { IndianRupee, Clock3, PackageCheck } from "lucide-react";
+
 interface DashboardCardProps {
   title: string;
   heading: string;
@@ -5,20 +7,13 @@ interface DashboardCardProps {
 }
 export function DashboardCard({ title, heading, value }: DashboardCardProps) {
   return (
-    <div className="rounded-xl border shadow-sm">
-      <div className="overflow-hidden rounded-xl">
-        <div className="border-t border-gray-200">
-          <div className="p-4 grid gap-4">
-            <div className="text-sm font-medium tracking-wide uppercase">
-              {title}
-            </div>
-            <div className="text-base font-semibold leading-none">
-              {heading}
-            </div>
-            <div className="text-3xl font-bold leading-snug">{value}</div>
-          </div>
-        </div>
-      </div>
+    <div className="surface metric-card">
+      <span className="metric-card-icon" aria-hidden="true">
+        {title === "Revenue" ? <IndianRupee size={20} /> : title === "Pending Orders" ? <Clock3 size={20} /> : <PackageCheck size={20} />}
+      </span>
+      <h2 className="metric-card-title">{title}</h2>
+      <div className="metric-card-value">{value}</div>
+      <p className="metric-card-caption">{heading}</p>
     </div>
   );
 }

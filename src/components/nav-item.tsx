@@ -1,12 +1,18 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
-import CategoryIcon from "@mui/icons-material/Category";
-import GradingIcon from "@mui/icons-material/Grading";
-import SettingsIcon from "@mui/icons-material/Settings";
 import { usePathname, useRouter } from "next/navigation";
-import { GiftIcon, LogOut } from "lucide-react";
+import {
+  Activity,
+  GiftIcon,
+  LogOut,
+  LayoutDashboard as DashboardIcon,
+  Package as ProductionQuantityLimitsIcon,
+  Tags as CategoryIcon,
+  ClipboardList as GradingIcon,
+  Settings as SettingsIcon,
+  Image,
+  ShieldCheck,
+} from "lucide-react";
 import { signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 const permissionsCodes = {
@@ -46,7 +52,7 @@ const routes = [
   },
   {
     label: "Banners",
-    icon: <CategoryIcon className="h-4 w-4 mr-2" />,
+    icon: <Image className="h-4 w-4 mr-2" />,
     href: `/dashboard/banners`,
     permission: ["manage_products", "manage_brands"],
   },
@@ -58,7 +64,7 @@ const routes = [
   },
   {
     label: "Roles and Permissions",
-    icon: <CategoryIcon className="h-4 w-4 mr-2" />,
+    icon: <ShieldCheck className="h-4 w-4 mr-2" />,
     href: `/dashboard/roles`,
     permission: ["manage_roles"],
   },
@@ -68,7 +74,15 @@ const routes = [
     href: `/dashboard/settings`,
     permission: ["manage_roles", "manage_accounts"],
   },
-
+  {
+    label: "Activity Log",
+    icon: <Activity className="mr-2 h-4 w-4 shrink-0" />,
+    href: `/dashboard/activity`,
+    permission: [
+      "manage_roles",
+      "manage_accounts",
+    ],
+  },
   {
     label: "Logout",
     icon: <LogOut className="h-4 w-4 mr-2" />,
@@ -126,24 +140,28 @@ const NavItem = () => {
   };
 
   return (
-    <div className="flex flex-col flex-start">
+    <nav className="sidebar-nav flex flex-col flex-start" aria-label="Main navigation">
       {filter.map((route) => (
         <Button
           onClick={() => onClickHandler(route.href)}
           key={route.href}
           size="sm"
           variant="ghost"
-          className={`w-full text-black font-normal justify-start ${
-            (pathname === route.href ||
-              pathname.startsWith(`${route.href}/new`)) &&
-            "bg-slate-600 text-white font-semibold"
-          }`}
+          className="nav-link w-full font-normal justify-start"
+          aria-current={
+            pathname === route.href ||
+            (route.href !== "/" &&
+              route.href !== "/dashboard" &&
+              pathname.startsWith(`${route.href}/`))
+              ? "page"
+              : undefined
+          }
         >
           {route.icon}
           {route.label}
         </Button>
       ))}
-    </div>
+    </nav>
   );
 };
 

@@ -24,6 +24,10 @@ export type Orders = {
   orderStatus: string;
 };
 
+const amountFormatter = new Intl.NumberFormat("en-IN", {
+  maximumFractionDigits: 2,
+});
+
 export const columns: ColumnDef<Orders>[] = [
   {
     id: "select",
@@ -49,24 +53,42 @@ export const columns: ColumnDef<Orders>[] = [
   },
   {
     accessorKey: "_id",
-    header: () => <div className="text-right">Order Id</div>,
+    header: () => <div>Order ID</div>,
     cell: ({ row }) => {
+      const id = row.getValue<string>("_id");
       return (
-        <div className="text-right font-medium">{row.getValue("_id")}</div>
+        <>
+          <div
+            className="max-w-[12rem] truncate font-medium text-primary"
+            title={id}
+          >
+            {id.length > 10 ? `${id.slice(0, 10)}...` : id}
+          </div>
+        </>
       );
     },
   },
   {
     accessorKey: "email",
     header: () => <div className="">Email</div>,
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    cell: ({ row }) => (
+      <div
+        className="max-w-[15rem] truncate lowercase"
+        title={row.getValue<string>("email")}
+      >
+        {row.getValue("email")}
+      </div>
+    ),
   },
   {
     accessorKey: "transactionId",
-    header: () => <div className="text-right">Transaction Id</div>,
+    header: () => <div>Transaction ID</div>,
     cell: ({ row }) => {
       return (
-        <div className="text-right font-medium">
+        <div
+          className="max-w-[12rem] truncate text-muted-foreground"
+          title={row.getValue<string>("transactionId")}
+        >
           {row.getValue("transactionId")}
         </div>
       );
@@ -78,6 +100,7 @@ export const columns: ColumnDef<Orders>[] = [
       return (
         <Button
           variant="ghost"
+          className="-ml-3 h-8 px-3"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Date
@@ -90,32 +113,41 @@ export const columns: ColumnDef<Orders>[] = [
         "en-US",
         {
           year: "numeric",
-          month: "long",
+          month: "short",
           day: "numeric",
-        }
+        },
       );
-      return <div className="text-right font-medium">{date}</div>;
+      return (
+        <div className="whitespace-nowrap text-muted-foreground">{date}</div>
+      );
     },
   },
   {
     accessorKey: "total",
-    header: () => <div className="w-full text-center">Total</div>,
+    header: () => <div className="text-right">Total</div>,
     cell: ({ row }) => {
       return (
-        <div className="flex w-full mx-4 font-medium">
-          <p>₹ {row.getValue("total")}</p>
+        <div className="whitespace-nowrap text-right font-medium tabular-nums">
+          {"\u20B9"} {amountFormatter.format(row.getValue<number>("total"))}
         </div>
       );
     },
   },
   {
     accessorKey: "orderStatus",
-    header: () => <div className="text-right">Status</div>,
+    header: () => <div>Status</div>,
     cell: ({ row }) => {
       return (
-        <div className="text-right font-medium">
+        <span
+          className="order-status"
+          data-status={row.getValue<string>("orderStatus")}
+        >
+          <span
+            aria-hidden="true"
+            className="h-1.5 w-1.5 shrink-0 rounded-full bg-current"
+          />
           {row.getValue("orderStatus")}
-        </div>
+        </span>
       );
     },
   },

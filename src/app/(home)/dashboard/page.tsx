@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { use, useEffect, useState } from "react";
+import { Download } from "lucide-react";
 
 const DashBoard = () => {
   const { data: session } = useSession();
@@ -100,12 +101,21 @@ const DashBoard = () => {
   );
 
   return (
-    <div>
-      <h1 className="text-2xl ml-8 mt-8 font-semibold">Dashboard</h1>
-      <div className="grid md:grid-cols-3 p-4 gap-4">
+    <div className="page-content dashboard-page">
+      <header className="page-heading dashboard-heading">
+        <div>
+          <p className="eyebrow text-primary mb-2">Workspace overview</p>
+          <h1 className="page-title">Dashboard</h1>
+          <p className="page-description">A clear view of your orders, revenue, and popular products.</p>
+        </div>
+        <Button variant="outline" onClick={() => getCSV()}>
+          <Download size={16} aria-hidden="true" /> Export pending orders
+        </Button>
+      </header>
+      <div className="metric-grid">
         <DashboardCard
           title="Shipped Orders"
-          heading="Total Shipped Orders"
+          heading="Shipped and delivered orders"
           value={orders
             .filter(
               (order: any) =>
@@ -116,46 +126,54 @@ const DashBoard = () => {
         />
         <DashboardCard
           title="Pending Orders"
-          heading="Total Pending Orders"
+          heading="Orders awaiting fulfilment"
           value={orders
             .filter((order: any) => order.orderStatus === "Processing")
             .length.toString()}
         />
         <DashboardCard
           title="Revenue"
-          heading="Total Revenue"
+          heading="Total order revenue"
           value={`₹ ${orders
             .reduce(
               (acc: number, order: any) => acc + order.paymentIntent.amount,
               0
             )
-            .toString()}`}
+            .toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
         />
       </div>
-      <Button className="ml-4" onClick={() => setView("products")}>
-        View Popular Products
-      </Button>
-      <Button className="ml-4" onClick={() => setView("orders")}>
-        View Recent Orders
-      </Button>
-      <Button className="ml-4" onClick={() => getCSV()}>
-        Export to CSV (pending orders)
-      </Button>
-      {view === "orders" ? (
-        <div>
-          <h1 className="text-2xl ml-8 mt-8 font-semibold">Recent Orders</h1>
-          <Dashboard loading={loading} data={data} columns={columns} />
+      <section className="surface dashboard-panel" aria-labelledby="dashboard-table-title">
+        <div className="dashboard-panel-header">
+          <div>
+            <h2 id="dashboard-table-title" className="section-title">
+              {view === "orders" ? "Recent orders" : "Popular products"}
+            </h2>
+            <p className="page-description">
+              {view === "orders"
+                ? "Your latest orders and their fulfilment status."
+                : "A closer look at your most popular products."}
+            </p>
+          </div>
+          <div className="view-switcher" role="group" aria-label="Dashboard view">
+            <Button size="sm" aria-pressed={view === "orders"} onClick={() => setView("orders")}>
+              Recent orders
+            </Button>
+            <Button size="sm" aria-pressed={view === "products"} onClick={() => setView("products")}>
+              Popular products
+            </Button>
+          </div>
         </div>
-      ) : (
-        <div>
-          <h1 className="text-2xl ml-8 mt-8 font-semibold">Popular Products</h1>
+        {view === "orders" ? (
+          <Dashboard embedded loading={loading} data={data} columns={columns} />
+        ) : (
           <PopularProductTable
+            embedded
             loading={loading}
             data={popularProductsData}
             columns={popularcolumns}
           />
-        </div>
-      )}
+        )}
+      </section>
     </div>
   );
 };

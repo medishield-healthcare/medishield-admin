@@ -83,7 +83,7 @@ const CouponForm = (props: Props) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
+        <Button className="px-4">
           Create Coupon
         </Button>
       </DialogTrigger>
@@ -121,7 +121,7 @@ const CouponForm = (props: Props) => {
                     {/* flat or percentage */}
                     <select
                       {...field}
-                      className="border border-gray-300 rounded-md px-2 py-1"
+                      className="border border-input bg-card rounded-md px-3 py-2"
                       defaultValue="flat"
                     >
                       <option value="flat">Flat</option>
@@ -145,7 +145,7 @@ const CouponForm = (props: Props) => {
                 </FormItem>
               )}
             />
-            <div className="flex space-x-1">
+            <div className="flex flex-wrap gap-3">
               <FormField
                 control={form.control}
                 name="minimumCartValue"
@@ -209,7 +209,7 @@ const CouponForm = (props: Props) => {
                     {/* select buttons */}
                     <select
                       {...field}
-                      className="border border-gray-300 rounded-md px-2 py-1"
+                      className="border border-input bg-card rounded-md px-3 py-2"
                       defaultValue="active"
                     >
                       <option value="active">Active</option>

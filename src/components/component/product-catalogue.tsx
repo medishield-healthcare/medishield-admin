@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Loader2, PackageIcon, Search } from "lucide-react";
+import { Loader2, PackageIcon, Search, Plus, Download, Upload } from "lucide-react";
 import { Input } from "../ui/input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -170,17 +170,19 @@ export function ProductCatalogue() {
 
   const router = useRouter();
   return (
-    <div className="flex flex-col ">
-      <header className="border-b p-4">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <PackageIcon className="w-6 h-6" />
-            <span className="text-lg font-semibold">Product Catalog</span>
+    <div className="page-content flex flex-col">
+      <header className="mb-6">
+        <div className="flex flex-col gap-6">
+          <div>
+            <p className="eyebrow text-primary mb-2">Your inventory, organized</p>
+            <h1 className="page-title">Product catalog</h1>
+            <p className="page-description">Manage your dental supplies, product details, and availability.</p>
           </div>
-          <div className="ml-auto flex items-center gap-4">
+          <div className="catalogue-toolbar">
             <Input
-              className="min-w-3xl"
-              placeholder="Search..."
+              className="catalogue-search"
+              aria-label="Search products"
+              placeholder="Search products..."
               type="search"
               onChange={async (e) => {
                 setSearch(e.target.value);
@@ -197,8 +199,10 @@ export function ProductCatalogue() {
               }}
             />
 
-            <Search
-              className="h-16 cursor-pointer w-16 text-black"
+            <Button
+              variant="outline"
+              size="icon"
+              aria-label="Search products"
               onClick={async () => {
                 if (search === "") {
                   router.push(`/dashboard/products`);
@@ -209,23 +213,23 @@ export function ProductCatalogue() {
                   fetchSearchProducts(search);
                 }
               }}
-            />
+            ><Search size={18} aria-hidden="true" /></Button>
 
             <Button
               onClick={() => router.replace("/dashboard/products/addProduct")}
               size="sm"
             >
-              Add Product
+              <Plus size={16} aria-hidden="true" /> Add Product
             </Button>
 
             <Button variant={"outline"} size="sm" onClick={getAllProductsCSV}>
-              Export CSV
+              <Download size={15} aria-hidden="true" /> Export CSV
             </Button>
 
             <Dialog>
               <DialogTrigger asChild>
                 <Button size="sm" variant="outline">
-                  Import CSV
+                  <Upload size={15} aria-hidden="true" /> Import CSV
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[1000px] mx-auto">
@@ -329,7 +333,7 @@ export function ProductCatalogue() {
           </div>
         </div>
       </header>
-      <main className="flex-1 m-8">
+      <div className="min-w-0 flex-1">
         {selectedProduct && selectedProduct.length > 0 && (
           <div className="mb-4">
             <BulkOptionBar
@@ -340,7 +344,7 @@ export function ProductCatalogue() {
           </div>
         )}
         {exporting && (
-          <div className="flex items-center justify-center h-64">
+          <div className="empty-state mb-5" role="status">
             <Loader2
               className="w-8 h-8 
             animate-spin
@@ -354,14 +358,15 @@ export function ProductCatalogue() {
           </div>
         )}
         {products.length === 0 && !loading ? (
-          <div className="flex items-center justify-center h-64">
+          <div className="empty-state mb-5">
+            <PackageIcon size={28} className="text-primary" aria-hidden="true" />
             <p className="text-lg text-gray-500">
               No products found. Try adding a new product.
             </p>
           </div>
         ) : null}
         {loading ? (
-          <p>Loading products...</p>
+          <div className="empty-state mb-5" role="status"><Loader2 className="animate-spin text-primary" size={24} aria-hidden="true" /><p>Loading products...</p></div>
         ) : (
           <>
             {searchq ||
@@ -372,29 +377,32 @@ export function ProductCatalogue() {
                     : `Showing products for ${brand} found (${products.length}) products`}
                 </p>
               ))}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4">
-              {products.map((product: any) => (
-                <ProductCard
-                  id={product._id}
-                  key={product.sku}
-                  title={product.name}
-                  description={product.short_description}
-                  image={
-                    product.thumbnail_url.startsWith("http")
-                      ? product.thumbnail_url
-                      : "https://images1.dentalkart.com/media/catalog/product" +
-                        product.thumbnail_url
-                  }
-                  price={product.price?.minimalPrice}
-                  slug={product.sku}
-                  media_gallery={product.media_gallery_entries.map(
-                    (file: any) => file.file
-                  )}
-                  product={product}
-                  selectedProduct={selectedProduct}
-                  setSelectedProduct={setSelectedProduct}
-                />
-              ))}
+            <div className="product-grid">
+              {products.map((product: any) => {
+                const imageUrl = product.thumbnail_url
+                  ? product.thumbnail_url.startsWith("http")
+                    ? product.thumbnail_url
+                    : "https://images1.dentalkart.com/media/catalog/product" + product.thumbnail_url
+                  : "/placeholder.png";
+
+                return (
+                  <ProductCard
+                    id={product._id}
+                    key={product.sku}
+                    title={product.name}
+                    description={product.short_description}
+                    image={imageUrl}
+                    price={product.price?.minimalPrice}
+                    slug={product.sku}
+                    media_gallery={product.media_gallery_entries.map(
+                      (file: any) => file.file
+                    )}
+                    product={product}
+                    selectedProduct={selectedProduct}
+                    setSelectedProduct={setSelectedProduct}
+                  />
+                );
+              })}
             </div>
           </>
         )}
@@ -409,7 +417,7 @@ export function ProductCatalogue() {
               />
             </PaginationItem>
             {
-              <div>
+              <div className="px-2 text-sm text-muted-foreground text-center">
                 current page: {page} of {Math.ceil(total / 10)}
               </div>
             }
@@ -423,7 +431,7 @@ export function ProductCatalogue() {
             </PaginationItem>
           </PaginationContent>
         </Pagination>
-      </main>
+      </div>
     </div>
   );
 }

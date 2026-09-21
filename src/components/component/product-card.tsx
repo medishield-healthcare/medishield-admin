@@ -122,16 +122,16 @@ const ProductCard = ({
   return (
     <Card
       className={cn(
-        "cursor-pointer relative group flex flex-col",
-        selectedProduct.includes(id) && "bg-gray-100  shadow-lg "
+        "product-card cursor-pointer relative group flex flex-col",
+        selectedProduct.includes(id) && "is-selected"
       )}
     >
       <input
         type="checkbox"
         aria-label="Select product"
         className="
-          absolute top-0 right-0 m-2
-           h-6 w-6
+          absolute top-0 right-0 z-10 m-3
+           h-5 w-5 cursor-pointer
           "
         checked={selectedProduct.includes(id)}
         onChange={(e) => {
@@ -145,45 +145,60 @@ const ProductCard = ({
         }}
       />
       <CardContent
-        className={cn("flex flex-col flex-1  mt-4 items-start justify-center")}
+        className="product-card-content"
       >
         <div
-          className=" space-y-2"
+          className="product-card-link"
+          role="link"
+          tabIndex={0}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") router.push(`/dashboard/products/${id}`);
+          }}
           onClick={() => router.push(`/dashboard/products/${id}`)}
         >
           <img
-            alt="Image"
-            className="aspect-video object-contain rounded-lg overflow-hidden border border-gray-200 w-full dark:border-gray-800"
+            alt={title}
+            className="product-card-image"
             height={150}
             src={image}
             width={200}
           />
-          <h2 className="text-lg font-bold leading-none">{title}</h2>
-          <p className="text-sm text-muted-foreground leading-none">
+          <h2 className="product-card-title">{title}</h2>
+          <p className="product-card-description">
             {description}
           </p>
           <div className="flex items-center justify-between">
-            <span className="text-lg font-bold">₹ {price}</span>
+            <span className="product-card-price">₹ {price}</span>
           </div>
         </div>
 
-        <div className="flex items-center justify-between w-full mt-2">
+        <div className="flex items-center justify-between w-full mt-auto pt-3">
           <Badge
             onClick={() => handleFeatured(id)}
+            role="button"
+            tabIndex={0}
+            aria-pressed={isFeatured}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                handleFeatured(id);
+              }
+            }}
             className={cn(
               "text-sm",
-              isFeatured ? "bg-green-500 text-white" : "bg-gray-900 text-white"
+              isFeatured ? "border-transparent bg-secondary text-primary hover:bg-accent" : "border-border bg-muted text-muted-foreground hover:bg-accent"
             )}
           >
             {isFeatured ? "Featured" : "Not Featured"}
           </Badge>
         </div>
       </CardContent>
-      <CardFooter className="p-4 md:flex   items-center hidden  justify-between bg-gray-200">
+      <CardFooter className="product-card-footer">
         <div className="flex items-center space-x-2">
           <Label htmlFor="published">Published</Label>
           <Switch
             id="published"
+            aria-label={`Publish ${title}`}
             checked={isPublished}
             onCheckedChange={() => handlePublish(id)}
           />
@@ -197,7 +212,7 @@ const ProductCard = ({
         </Button>
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button size="sm" variant="destructive">
+            <Button size="sm" variant="destructive" className="border border-destructive/20 bg-destructive/5 text-destructive hover:bg-destructive/10">
               Delete
             </Button>
           </AlertDialogTrigger>

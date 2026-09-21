@@ -27,6 +27,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn, useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import { ArrowRight, LockKeyhole } from "lucide-react";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -66,24 +67,25 @@ export function LoginForm() {
   }, [user]);
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl">Login</CardTitle>
+    <Card className="login-card">
+      <CardHeader className="login-card-header">
+        <span className="eyebrow text-primary">Welcome to your workspace</span>
+        <CardTitle>Good to see you again.</CardTitle>
         <CardDescription>
-          Enter your Credentials below to login to your account.
+          Sign in to keep your business moving forward.
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="login-card-content">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Email address</FormLabel>
                   <FormControl>
-                    <Input placeholder="johndoe@gmail.com" {...field} />
+                    <Input autoComplete="username" inputMode="email" placeholder="you@company.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -96,16 +98,17 @@ export function LoginForm() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="*******" {...field} />
+                    <Input type="password" autoComplete="current-password" placeholder="Enter your password" {...field} />
                   </FormControl>
 
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" className="login-submit">Sign in to workspace <ArrowRight size={17} aria-hidden="true" /></Button>
           </form>
         </Form>
+        <p className="login-note"><LockKeyhole size={13} aria-hidden="true" /> For authorized MediShield team members.</p>
       </CardContent>
     </Card>
   );

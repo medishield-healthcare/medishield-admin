@@ -4,9 +4,9 @@ import React from "react";
 
 const page = () => {
   return (
-    <div className="p-8">
+    <div className="page-content">
       <header>
-        <h1 className="text-xl font-semibold">Category</h1>
+        <h1 className="page-title">Category</h1>
       </header>
       <CategoryAddPanel />
     </div>

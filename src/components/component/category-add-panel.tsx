@@ -48,12 +48,12 @@ export function CategoryAddPanel() {
   }
 
   return (
-    <div className="flex h-[600px] bg-gray-100 rounded-lg m-8 border-gray-200 border shadow-sm">
-      <div className="flex flex-col w-full px-4 py-6 border-r border-gray-500">
+    <div className="category-panel surface mt-6 overflow-hidden">
+      <div className="flex min-w-0 flex-col w-full px-4 py-6 border-r">
         <div className="space-y-2 p-2 overflow-auto">
           <div className="font-bold">Category</div>
           <Input placeholder="Name of category" />
-          <Button onClick={() => handleAddSubCat()} className=" hover:bg-black">
+          <Button onClick={() => handleAddSubCat()} className="hover:bg-primary/90">
             Add Category
           </Button>
           {!loading &&
@@ -76,11 +76,11 @@ export function CategoryAddPanel() {
             })}
         </div>
       </div>
-      <div className="flex flex-col w-full px-4 py-6 border-r border-gray-500">
+      <div className="flex min-w-0 flex-col w-full px-4 py-6 border-r">
         <div className="space-y-2 p-2 overflow-auto">
           <div className="font-bold">Subcategory</div>
           <Input placeholder="Name of subcategory" />
-          <Button onClick={() => handleAddSubCat()} className=" hover:bg-black">
+          <Button onClick={() => handleAddSubCat()} className="hover:bg-primary/90">
             Add Subcategory
           </Button>
           {data.map((category: any) => {
@@ -112,7 +112,7 @@ export function CategoryAddPanel() {
         <div className="space-y-2 p-2 overflow-auto">
           <div className="font-bold">Child Category</div>
           <Input placeholder="Name of child category" />
-          <Button className=" hover:bg-black">Add Child Category</Button>
+          <Button className="hover:bg-primary/90">Add Child Category</Button>
 
           {data.map((category: any) => {
             if (category._id === selectedcategory) {

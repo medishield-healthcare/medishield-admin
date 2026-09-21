@@ -95,8 +95,8 @@ export function BulkOptionBar(props: BulkOptionBarProps) {
   };
 
   return (
-    <div className="bg-gray-100 dark:bg-gray-800 p-4 flex items-center justify-between rounded-lg">
-      <div className="flex items-center gap-4">
+    <div className="bg-secondary border p-4 flex flex-wrap gap-4 items-center justify-between rounded-lg">
+      <div className="flex flex-wrap items-center gap-3">
         <input
           type="checkbox"
           className="h-6 w-6 "
@@ -121,7 +121,7 @@ export function BulkOptionBar(props: BulkOptionBarProps) {
           Select All
         </Label>
       </div>
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-3">
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button size="sm" variant="outline">

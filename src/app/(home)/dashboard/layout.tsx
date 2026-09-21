@@ -3,6 +3,7 @@ import MobileSidebar from "@/components/mobile-sidebar";
 import { EdgeStoreProvider } from "@/lib/edgestore";
 
 import { Suspense } from "react";
+import { ShieldPlus } from "lucide-react";
 
 export default function DashboardLayout({
   children,
@@ -10,21 +11,23 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-col md:flex-row items-start h-full">
+    <div className="admin-shell">
+      <a className="skip-link" href="#main-content">Skip to content</a>
       <div className="md:block hidden">
         <Suspense fallback={<div>Loading...</div>}>
           <Sidebar />
         </Suspense>
       </div>
-      <div className="md:hidden flex items-center bg-gray-100 w-full p-2">
+      <div className="mobile-header">
         <Suspense fallback={<div>Loading...</div>}>
           <MobileSidebar>
             <Sidebar />
           </MobileSidebar>
         </Suspense>
-        <div className="text-lg font-semibold">MediShield Admin</div>
+        <ShieldPlus size={22} aria-hidden="true" />
+        <div className="brand-name">MediShield</div>
       </div>
-      <main className="w-full md:ml-[250px]  ml-0 overflow-auto">
+      <main className="admin-content" id="main-content" tabIndex={-1}>
         <EdgeStoreProvider>{children}</EdgeStoreProvider>
       </main>
     </div>

@@ -1,17 +1,93 @@
+"use client";
+import { useState } from "react";
 import Link from "next/link";
 import NavItem from "./nav-item";
-import { Package2Icon } from "lucide-react";
+import { ShieldPlus, RefreshCw, UserRound } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 const Sidebar = () => {
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState("");
+
+
+  const { data: session } = useSession();
+
+  const handleSyncZoho = async () => {
+    setLoading(true);
+    setStatus("");
+
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/product/sync/zoho",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session?.user?.access_token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Zoho sync failed");
+      }
+
+      setStatus(
+        `Synced successfully: added ${data.summary.addedCount}, updated ${data.summary.updatedCount}`
+      );
+    } catch (error: any) {
+      setStatus(error.message || "Sync error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="md:block relative md:fixed h-screen w-64 p-2 bg-gray-100  max-md:w-full font-medium text-xs py-4 mb-1">
-      <div className="flex h-[60px] items-center px-6 mb-4">
-        <Link className="flex items-center  gap-2 font-semibold" href="#">
-          <Package2Icon className="h-6 w-6" />
-          <span className="">MediShield Admin</span>
+    <div className="sidebar">
+      <div className="sidebar-brand">
+        <Link className="brand" href="#">
+          <span className="brand-mark"><ShieldPlus size={23} aria-hidden="true" /></span>
+          <span>
+            <span className="brand-name">MediShield</span>
+            <span className="sidebar-brand-caption block">Admin workspace</span>
+          </span>
         </Link>
       </div>
+      <div className="sidebar-label">WORKSPACE</div>
       <NavItem />
+      <div className="sidebar-sync">
+        <div className="sidebar-sync-card">
+        <h2>Zoho inventory</h2>
+        <p>Keep your product catalogue up to date.</p>
+        <button
+          onClick={handleSyncZoho}
+          disabled={loading}
+          className="sidebar-sync-button"
+        >
+          <RefreshCw size={14} className={loading ? "animate-spin" : ""} aria-hidden="true" />
+          {loading ? "Syncing Zoho..." : "Import Zoho Products"}
+        </button>
+
+        {status && (
+          <p role="status" className="sidebar-sync-status mt-3 text-sm break-words">
+            {status}
+          </p>
+        )}
+        </div>
+      </div>
+      <div className="sidebar-account">
+        <span className="sidebar-account-avatar"><UserRound size={18} aria-hidden="true" /></span>
+        <div className="min-w-0">
+          <p className="sidebar-account-name" title={session?.user?.name || undefined}>
+            {session?.user?.name || "MediShield admin"}
+          </p>
+          {session?.user?.email && (
+            <p className="sidebar-account-email" title={session.user.email}>{session.user.email}</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

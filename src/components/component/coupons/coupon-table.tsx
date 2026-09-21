@@ -68,13 +68,13 @@ export default function CouponTable({ data, columns, loading }: props) {
   });
 
   return (
-    <div className="w-full p-5">
-      <div className="flex items-center justify-between py-4">
-        <h1 className="text-2xl font-semibold">Coupons</h1>
+    <div className="table-panel w-full">
+      <div className="table-toolbar justify-between">
+        <h1 className="section-title">Coupons</h1>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-8">
+            <Button variant="outline" className="ml-auto">
               Columns <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -141,7 +141,7 @@ export default function CouponTable({ data, columns, loading }: props) {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-40 text-center text-muted-foreground"
                 >
                   Loading...
                 </TableCell>
@@ -150,7 +150,7 @@ export default function CouponTable({ data, columns, loading }: props) {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-40 text-center text-muted-foreground"
                 >
                   No results.
                 </TableCell>
@@ -159,7 +159,7 @@ export default function CouponTable({ data, columns, loading }: props) {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="table-pagination justify-end">
         <div className="space-x-2">
           <Button
             variant="outline"

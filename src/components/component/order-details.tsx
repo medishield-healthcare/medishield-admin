@@ -169,11 +169,11 @@ export function OrderDetails({ order }: any) {
         <CardHeader>
           <CardTitle>Order summary</CardTitle>
           <CardDescription>
-            <div className="flex justify-between items-center">
+            <div className="flex flex-wrap justify-between items-center gap-3">
               <div>
                 Order #{order._id} placed by
                 <Link
-                  className="text-blue-600 underline ml-2"
+                  className="text-primary underline underline-offset-4 ml-2"
                   href={`mailto:${order.orderby?.email}`}
                 >
                   {order.orderby?.firstname} {order.orderby?.lastname}
@@ -195,7 +195,7 @@ export function OrderDetails({ order }: any) {
           </CardDescription>
         </CardHeader>
         <CardContent className="grid md:grid-cols-2 gap-4">
-          <div className="grid grid-cols-2 gap-1 text-sm">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm break-words min-w-0">
             <div className="font-medium">Order number</div>
             <div>#{order._id}</div>
             <div className="font-medium">Date</div>
@@ -303,7 +303,7 @@ export function OrderDetails({ order }: any) {
           <CardTitle>Shipping information</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 gap-1 text-sm">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm break-words min-w-0">
             <div className="font-medium">Method</div>
             <div>Standard shipping</div>
             <div className="font-medium">Status</div>
@@ -356,7 +356,7 @@ export function OrderDetails({ order }: any) {
                 <div>
                   <Link
                     href={`https://app.shiprocket.in/seller/orders/details/${order?.shipmentInfo?.payload.order_id}`}
-                    className="text-blue-600 underline"
+                    className="text-primary underline underline-offset-4"
                     target="_blank"
                   >
                     {order?.shipmentInfo?.payload.order_id}
@@ -402,7 +402,7 @@ export function OrderDetails({ order }: any) {
           <CardHeader>
             <CardTitle>Actions</CardTitle>
           </CardHeader>
-          <CardContent className="flex items-center justify-between ">
+          <CardContent className="flex flex-wrap items-center justify-between gap-3">
             <div className="space-x-2">
               <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger>

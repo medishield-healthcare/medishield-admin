@@ -9,11 +9,11 @@ type Props = {};
 
 const page = (props: Props) => {
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between">
+    <div className="page-content">
+      <div className="page-heading">
         <div>
-          <h1 className="text-3xl font-semibold ">Coupon Management</h1>
-          <p className="text-md text-gray-600 mt-2">
+          <h1 className="page-title">Coupon Management</h1>
+          <p className="page-description">
             This is the coupon management page. You can manage all your coupons
             here.
           </p>

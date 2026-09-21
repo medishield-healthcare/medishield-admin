@@ -24,8 +24,8 @@ const page = ({ params: { slug } }: any) => {
   console.log(orderDetails);
 
   return (
-    <div className="p-8 h-screen">
-      <h1 className="text-2xl font-semibold">Order Details</h1>
+    <div className="page-content">
+      <h1 className="page-title mb-6">Order Details</h1>
 
       {loading && (
         <div className="flex justify-center h-full items-center">
@@ -33,7 +33,7 @@ const page = ({ params: { slug } }: any) => {
         </div>
       )}
       {!loading && orderDetails && (
-        <div className="p-8">
+        <div className="space-y-5">
           <OrderDetails order={orderDetails} />
         </div>
       )}

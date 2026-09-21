@@ -24,6 +24,10 @@ export type PopularProducts = {
   medishield_coins: number;
 };
 
+const amountFormatter = new Intl.NumberFormat("en-IN", {
+  maximumFractionDigits: 2,
+});
+
 export const popularcolumns: ColumnDef<PopularProducts>[] = [
   {
     id: "select",
@@ -51,14 +55,14 @@ export const popularcolumns: ColumnDef<PopularProducts>[] = [
   {
     accessorKey: "name",
     header: () => <div className="">Name</div>,
-    cell: ({ row }) => <div className="lowercase">{row.getValue("name")}</div>,
+    cell: ({ row }) => <div className="max-w-[24rem] truncate font-medium" title={row.getValue<string>("name")}>{row.getValue("name")}</div>,
   },
   {
     accessorKey: "sku",
-    header: () => <div className="text-right">SKU</div>,
+    header: () => <div>SKU</div>,
     cell: ({ row }) => {
       return (
-        <div className="text-right font-medium">{row.getValue("sku")}</div>
+        <div className="max-w-[12rem] truncate text-muted-foreground" title={row.getValue<string>("sku")}>{row.getValue("sku")}</div>
       );
     },
   },
@@ -68,6 +72,7 @@ export const popularcolumns: ColumnDef<PopularProducts>[] = [
       return (
         <Button
           variant="ghost"
+          className="ml-auto flex h-8 px-0 hover:bg-transparent"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Price
@@ -76,15 +81,15 @@ export const popularcolumns: ColumnDef<PopularProducts>[] = [
       );
     },
     cell: ({ row }) => {
-      return <div className="font-medium">₹ {row.getValue("price")}</div>;
+      return <div className="whitespace-nowrap text-right font-medium tabular-nums">{"\u20B9"} {amountFormatter.format(row.getValue<number>("price"))}</div>;
     },
   },
   {
     accessorKey: "stock",
-    header: () => <div className="w-full text-center">stock</div>,
+    header: () => <div className="text-right">Stock</div>,
     cell: ({ row }) => {
       return (
-        <div className="flex w-full mx-4 font-medium">
+        <div className="text-right font-medium tabular-nums">
           <p>{row.getValue("stock")}</p>
         </div>
       );
@@ -92,10 +97,10 @@ export const popularcolumns: ColumnDef<PopularProducts>[] = [
   },
   {
     accessorKey: "medishield_coins",
-    header: () => <div className="text-right">Medishield Coins</div>,
+    header: () => <div className="text-right">MediShield Coins</div>,
     cell: ({ row }) => {
       return (
-        <div className="text-right font-medium">
+        <div className="text-right font-medium tabular-nums">
           {row.getValue("medishield_coins")}
         </div>
       );

@@ -13,5 +13,6 @@ export const config = {
     "/dashboard/products/addProduct",
     "/dashboard/settings",
     "/dashboard/roles",
+    "/dashboard/activity",
   ],
 };
