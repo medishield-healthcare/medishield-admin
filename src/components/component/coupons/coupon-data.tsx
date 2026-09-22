@@ -88,15 +88,15 @@ export const columns: ColumnDef<Coupon>[] = [
       <div className="font-medium">{row.getValue("minimumCartValue")}</div>
     ),
   },
-  {
-    accessorKey: "minimumMedishieldCoins",
-    header: () => <div className="">Required MSC</div>,
-    cell: ({ row }) => (
-      <div className=" font-medium">
-        {row.getValue("minimumMedishieldCoins")}
-      </div>
-    ),
-  },
+  // {
+  //   accessorKey: "minimumMedishieldCoins",
+  //   header: () => <div className="">Required MSC</div>,
+  //   cell: ({ row }) => (
+  //     <div className=" font-medium">
+  //       {row.getValue("minimumMedishieldCoins")}
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: "actions",
     header: () => <div className="">Actions</div>,

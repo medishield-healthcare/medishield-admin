@@ -47,7 +47,7 @@ const CouponForm = (props: Props) => {
       type: "flat",
       discount: 0,
       minimumCartValue: 0,
-      minimumMedishieldCoins: 0,
+      minimumMedishieldCoins: 1,
       expiryDate: "",
       status: "active",
     },
@@ -83,9 +83,7 @@ const CouponForm = (props: Props) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="px-4">
-          Create Coupon
-        </Button>
+        <Button className="px-4">Create Coupon</Button>
       </DialogTrigger>
 
       {/* form to handle creation of new coupons  */}
@@ -104,9 +102,17 @@ const CouponForm = (props: Props) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Coupon Code</FormLabel>
+
                   <FormControl>
-                    <Input placeholder="Coupon Code" {...field} />
+                    <Input
+                      placeholder="Coupon Code"
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e.target.value.toUpperCase());
+                      }}
+                    />
                   </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
@@ -145,7 +151,7 @@ const CouponForm = (props: Props) => {
                 </FormItem>
               )}
             />
-            <div className="flex flex-wrap gap-3">
+            <div className="x">
               <FormField
                 control={form.control}
                 name="minimumCartValue"
@@ -168,10 +174,10 @@ const CouponForm = (props: Props) => {
                 name="minimumMedishieldCoins"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Minimum Medishield Coins</FormLabel>
+                    {/* <FormLabel>Minimum Medishield Coins</FormLabel> */}
                     <FormControl>
                       <Input
-                        type="number"
+                        type="hidden"
                         placeholder="Minimum Medishield Coins"
                         {...field}
                       />
