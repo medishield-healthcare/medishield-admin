@@ -425,7 +425,7 @@ export function ProductUpdate({
                       </FormControl>
                       <FormDescription>
                         {isZohoProduct && (
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm text-red-500">
                             This is a Zoho product and the SKU is managed there.
                           </p>
                         )}
@@ -488,7 +488,7 @@ export function ProductUpdate({
                       </FormControl>
                       <FormDescription>
                         {isZohoProduct && (
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm text-red-500">
                             This is a Zoho product and the price is managed there.
                           </p>
                         )}
@@ -548,7 +548,7 @@ export function ProductUpdate({
                       </FormControl>
                       <FormDescription>
                         {isZohoProduct && (
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm text-red-500">
                             This is a Zoho product and the stock is managed there.
                           </p>
                         )}
