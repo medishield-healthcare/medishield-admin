@@ -79,6 +79,7 @@ const ProductCard = ({
         description: "The product has been removed from the database.",
         closeButton: true,
       });
+      window.location.reload();
       router.refresh();
     } catch (error) {
       toast("Error", {

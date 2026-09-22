@@ -19,6 +19,7 @@ export function AlertDialogDemo() {
       closeButton: true,
     });
     console.log("Action has been clicked");
+    window.location.reload();
   };
 
   return (
