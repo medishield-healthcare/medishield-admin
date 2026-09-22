@@ -18,7 +18,7 @@ const Sidebar = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/product/sync/zoho",
+        `${process.env.API_URL}/api/product/sync/zoho`,
         {
           method: "POST",
           headers: {
