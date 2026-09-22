@@ -424,7 +424,16 @@ export function ProductUpdate({
                         />
                       </FormControl>
                       <FormDescription>
-                        Enter Product SKU (Stock Keeping Unit)
+                        {isZohoProduct && (
+                          <p className="text-sm text-muted-foreground">
+                            This is a Zoho product and the SKU is managed there.
+                          </p>
+                        )}
+                        {!isZohoProduct && (
+                          <p>
+                            Enter Product SKU (Stock Keeping Unit)
+                          </p>
+                        )}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -477,6 +486,13 @@ export function ProductUpdate({
                           {...field}
                         />
                       </FormControl>
+                      <FormDescription>
+                        {isZohoProduct && (
+                          <p className="text-sm text-muted-foreground">
+                            This is a Zoho product and the price is managed there.
+                          </p>
+                        )}
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -530,6 +546,13 @@ export function ProductUpdate({
                           {...field}
                         />
                       </FormControl>
+                      <FormDescription>
+                        {isZohoProduct && (
+                          <p className="text-sm text-muted-foreground">
+                            This is a Zoho product and the stock is managed there.
+                          </p>
+                        )}
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
