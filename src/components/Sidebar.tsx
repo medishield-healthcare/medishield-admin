@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 const Sidebar = () => {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
-
+ 
 
   const { data: session } = useSession();
 
@@ -18,7 +18,7 @@ const Sidebar = () => {
 
     try {
       const response = await fetch(
-        `${process.env.API_URL}/api/product/sync/zoho`,
+        `${process.env.API_URL ?? "http://localhost:5000"}/api/product/sync/zoho`,
         {
           method: "POST",
           headers: {

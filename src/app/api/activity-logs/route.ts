@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     if (value) params.set(key, value);
   }
   try {
-    const response = await axios.get(`${process.env.API_URL}/api/activity-logs`, {
+    const response = await axios.get(`${process.env.API_URL ?? "http://localhost:5000"}/api/activity-logs`, {
       params,
       headers: { Authorization: `Bearer ${session.user.access_token}` },
       timeout: 15000,
