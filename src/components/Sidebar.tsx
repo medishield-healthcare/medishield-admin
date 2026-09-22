@@ -6,6 +6,7 @@ import { ShieldPlus, RefreshCw, UserRound } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 const Sidebar = () => {
+  const Back_API_URL = "https://medishield-backend-ywgp.onrender.com";
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
  
@@ -18,7 +19,7 @@ const Sidebar = () => {
 
     try {
       const response = await fetch(
-        `${process.env.API_URL ?? "http://localhost:5000"}/api/product/sync/zoho`,
+        `${Back_API_URL}/api/product/sync/zoho`,
         {
           method: "POST",
           headers: {
