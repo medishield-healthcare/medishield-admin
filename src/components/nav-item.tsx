@@ -11,6 +11,7 @@ import {
   ClipboardList as GradingIcon,
   Settings as SettingsIcon,
   Image,
+  Video,
   ShieldCheck,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
@@ -54,6 +55,12 @@ const routes = [
     label: "Banners",
     icon: <Image className="h-4 w-4 mr-2" />,
     href: `/dashboard/banners`,
+    permission: ["manage_products", "manage_brands"],
+  },
+  {
+    label: "Videos",
+    icon: <Video className="h-4 w-4 mr-2" />,
+    href: `/dashboard/videos`,
     permission: ["manage_products", "manage_brands"],
   },
   {
