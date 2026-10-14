@@ -1,31 +1,37 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { columns, Coupon } from "./coupon-data";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { getColumns, type Coupon } from "./coupon-data";
 import CouponTable from "./coupon-table";
+import { toast } from "sonner";
 
-type Props = {};
+type ApiCoupon = Omit<Coupon, "id"> & { _id: string };
 
-const CouponTableMain = (props: Props) => {
+const CouponTableMain = () => {
   const [loading, setLoading] = useState(true);
-  const [coupon, setCoupon] = useState([]);
+  const [coupons, setCoupons] = useState<ApiCoupon[]>([]);
 
-  const fetchCoupons = async () => {
+  const fetchCoupons = useCallback(async () => {
     setLoading(true);
-    const res = await fetch("/api/coupons");
-    const data = await res.json();
-
-    setCoupon(data["data"]);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchCoupons();
+    try {
+      const response = await fetch("/api/coupons", { cache: "no-store" });
+      const result = await response.json().catch(() => null);
+      if (!response.ok || !Array.isArray(result?.data)) {
+        throw new Error("Unable to load coupons.");
+      }
+      setCoupons(result.data);
+    } catch {
+      toast.error("Unable to load coupons. Please refresh and try again.");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const data: Coupon[] = coupon.map((coupon: any) => {
-    console.log(coupon._id);
-    return {
+  useEffect(() => {
+    void fetchCoupons();
+  }, [fetchCoupons]);
+
+  const data: Coupon[] = coupons.map((coupon) => ({
       id: coupon._id,
       couponCode: coupon.couponCode,
       type: coupon.type,
@@ -34,8 +40,8 @@ const CouponTableMain = (props: Props) => {
       minimumMedishieldCoins: coupon.minimumMedishieldCoins,
       expiryDate: coupon.expiryDate,
       status: coupon.status,
-    };
-  });
+  }));
+  const columns = useMemo(() => getColumns(() => void fetchCoupons()), [fetchCoupons]);
 
   return (
     <div className="mt-8">

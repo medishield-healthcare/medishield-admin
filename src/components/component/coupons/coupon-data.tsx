@@ -3,6 +3,7 @@ import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
+import CouponForm from "./coupon-form";
 
 import {
   AlertDialog,
@@ -20,7 +21,7 @@ export type Coupon = {
   discount: number;
   minimumCartValue: number;
   minimumMedishieldCoins: number;
-  expiryDate: Date;
+  expiryDate: string;
   status: string;
 };
 
@@ -38,7 +39,7 @@ const handleDelete = async (id: string) => {
   }
 };
 
-export const columns: ColumnDef<Coupon>[] = [
+export const getColumns = (onUpdated: () => void): ColumnDef<Coupon>[] => [
   {
     accessorKey: "id",
     header: () => <div className="hidden">ID</div>,
@@ -101,13 +102,13 @@ export const columns: ColumnDef<Coupon>[] = [
     accessorKey: "actions",
     header: () => <div className="">Actions</div>,
     cell: ({ row }) => (
-      <div className="font-medium">
+      <div className="font-medium flex items-center gap-2">
+        <CouponForm coupon={row.original} onSaved={onUpdated} />
         {/* delete alert */}
         <AlertDialog>
-          <AlertDialogTrigger>
-            <Button size="icon" variant="destructive">
+          <AlertDialogTrigger asChild>
+            <Button size="icon" variant="destructive" aria-label={`Delete coupon ${row.original.couponCode}`}>
               <Trash className="h-4 w-4" />
-              <span className="sr-only">Delete</span>
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
@@ -116,7 +117,6 @@ export const columns: ColumnDef<Coupon>[] = [
               <p className="mb-4">
                 Are you sure you want to delete the coupon{" "}
                 <strong>{row.getValue("couponCode")}</strong>?
-                {row.getValue("id")}
               </p>
             </div>
             <AlertDialogFooter>
