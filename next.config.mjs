@@ -32,7 +32,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: 'https://medisheild-react-native-expo.vercel.app',
+            value: 'https://www.medishieldhealthcare.com',
           },
           {
             key: 'Access-Control-Allow-Methods',
