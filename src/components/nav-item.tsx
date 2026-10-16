@@ -12,6 +12,7 @@ import {
   Settings as SettingsIcon,
   Image,
   Video,
+  CalendarDays,
   ShieldCheck,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
@@ -62,6 +63,19 @@ const routes = [
     icon: <Video className="h-4 w-4 mr-2" />,
     href: `/dashboard/videos`,
     permission: ["manage_products", "manage_brands"],
+  },
+  {
+    label: "Events",
+    icon: <CalendarDays className="h-4 w-4 mr-2" />,
+    href: `/dashboard/events`,
+    permission: [
+      "manage_roles",
+      "manage_accounts",
+      "manage_products",
+      "manage_brands",
+      "manage_orders",
+      "manage_coupons",
+    ],
   },
   {
     label: "Coupons ",

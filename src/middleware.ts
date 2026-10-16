@@ -14,5 +14,6 @@ export const config = {
     "/dashboard/settings",
     "/dashboard/roles",
     "/dashboard/activity",
+    "/dashboard/events",
   ],
 };
