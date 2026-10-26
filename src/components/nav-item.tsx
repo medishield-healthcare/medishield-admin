@@ -13,6 +13,7 @@ import {
   Image,
   Video,
   CalendarDays,
+  BookOpen,
   ShieldCheck,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
@@ -68,6 +69,19 @@ const routes = [
     label: "Events",
     icon: <CalendarDays className="h-4 w-4 mr-2" />,
     href: `/dashboard/events`,
+    permission: [
+      "manage_roles",
+      "manage_accounts",
+      "manage_products",
+      "manage_brands",
+      "manage_orders",
+      "manage_coupons",
+    ],
+  },
+  {
+    label: "Blogs",
+    icon: <BookOpen className="h-4 w-4 mr-2" />,
+    href: `/dashboard/blogs`,
     permission: [
       "manage_roles",
       "manage_accounts",

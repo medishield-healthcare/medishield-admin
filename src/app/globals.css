@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+.blog-editor .ql-toolbar.ql-snow { border: 0; border-bottom: 1px solid hsl(var(--border)); }
+.blog-editor .ql-container.ql-snow { border: 0; font-family: inherit; font-size: 0.9rem; }
+.blog-editor .ql-editor { min-height: 210px; line-height: 1.65; }
+.blog-editor .ql-editor.ql-blank::before { color: hsl(var(--muted-foreground)); }
+
 @layer base {
   :root {
     --background: 120 7% 97%;

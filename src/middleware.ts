@@ -15,5 +15,6 @@ export const config = {
     "/dashboard/roles",
     "/dashboard/activity",
     "/dashboard/events",
+    "/dashboard/blogs",
   ],
 };
