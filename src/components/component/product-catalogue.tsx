@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Loader2, PackageIcon, Search, Plus, Download, Upload } from "lucide-react";
 import { Input } from "../ui/input";
+import { PageJump } from "../ui/page-jump";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ProductCard from "./product-card";
@@ -15,7 +16,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../ui/pagination";
-import { use, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import CSVReader from "react-csv-reader";
 import {
@@ -34,7 +35,7 @@ import { toast } from "sonner";
 
 export function ProductCatalogue() {
   const [products, setProducts] = useState([]) as any;
-  const [search, setSearch] = useState("") as any;
+  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [importing, setImporting] = useState(false);
@@ -46,6 +47,8 @@ export function ProductCatalogue() {
   const brand = searchParams.get("brand");
   const published = searchParams.get("published");
   const [importedData, setImportedData] = useState([]) as any;
+  const previousFilterKey = useRef(JSON.stringify([brand, searchq]));
+  const pageCount = Math.max(1, Math.ceil(total / 10));
 
   const fetchProducts = async (page: any) => {
     setLoading(true);
@@ -56,9 +59,9 @@ export function ProductCatalogue() {
     setLoading(false);
   };
 
-  const fetchbrandProducts = async (brand: any) => {
+  const fetchbrandProducts = async (brand: string, page: number) => {
     setLoading(true);
-    const response = await fetch(`/api/product/?brand=${brand}`);
+    const response = await fetch(`/api/product/?brand=${encodeURIComponent(brand)}&page=${page}`);
     const data = await response.json();
     setProducts(data["data"]);
     setTotal(data["count"]);
@@ -66,21 +69,27 @@ export function ProductCatalogue() {
   };
 
   useEffect(() => {
-    if (brand) {
-      fetchbrandProducts(brand);
-    } else if (searchq == null) {
-      fetchProducts(page);
-    } else {
-      if (searchq !== "") {
-        fetchSearchProducts(searchq);
+    const filterKey = JSON.stringify([brand, searchq]);
+    if (previousFilterKey.current !== filterKey) {
+      previousFilterKey.current = filterKey;
+      if (page !== 1) {
+        setPage(1);
+        return;
       }
+    }
+    if (brand) {
+      fetchbrandProducts(brand, page);
+    } else if (searchq) {
+      fetchSearchProducts(searchq, page);
+    } else {
+      fetchProducts(page);
     }
   }, [page, searchq, brand]);
 
-  const fetchSearchProducts = async (searchq: string) => {
+  const fetchSearchProducts = async (searchq: string, page: number) => {
     setLoading(true);
     console.log(searchq);
-    const response = await fetch(`/api/productsearch/?search=${searchq}`);
+    const response = await fetch(`/api/productsearch/?search=${encodeURIComponent(searchq)}&page=${page}`);
     const data = await response.json();
     setProducts(data["data"]);
     setTotal(data["count"]);
@@ -169,6 +178,11 @@ export function ProductCatalogue() {
   };
 
   const router = useRouter();
+  const applySearch = () => {
+    const query = search.trim();
+    if (!brand && query === (searchq ?? "")) setPage(1);
+    router.push(query ? `/dashboard/products?search=${encodeURIComponent(query)}` : "/dashboard/products");
+  };
   return (
     <div className="page-content flex flex-col">
       <header className="mb-6">
@@ -187,15 +201,8 @@ export function ProductCatalogue() {
               onChange={async (e) => {
                 setSearch(e.target.value);
               }}
-              onKeyPress={async (e) => {
-                if (e.key === "Enter" && search === "") {
-                  router.push(`/dashboard/products`);
-                  fetchProducts(page);
-                }
-                if (e.key === "Enter" && search !== "") {
-                  router.push(`/dashboard/products?search=${search}`);
-                  fetchSearchProducts(search);
-                }
+              onKeyDown={(e) => {
+                if (e.key === "Enter") applySearch();
               }}
             />
 
@@ -203,16 +210,7 @@ export function ProductCatalogue() {
               variant="outline"
               size="icon"
               aria-label="Search products"
-              onClick={async () => {
-                if (search === "") {
-                  router.push(`/dashboard/products`);
-                  fetchProducts(page);
-                }
-                if (search !== "") {
-                  router.push(`/dashboard/products?search=${search}`);
-                  fetchSearchProducts(search);
-                }
-              }}
+              onClick={applySearch}
             ><Search size={18} aria-hidden="true" /></Button>
 
             <Button
@@ -407,7 +405,7 @@ export function ProductCatalogue() {
           </>
         )}
         <Pagination>
-          <PaginationContent>
+          <PaginationContent className="flex-wrap justify-center">
             <PaginationItem>
               <PaginationPrevious
                 className="cursor-pointer"
@@ -416,18 +414,19 @@ export function ProductCatalogue() {
                 }}
               />
             </PaginationItem>
-            {
-              <div className="px-2 text-sm text-muted-foreground text-center">
-                current page: {page} of {Math.ceil(total / 10)}
-              </div>
-            }
+            <PaginationItem className="px-2 text-sm text-muted-foreground text-center">
+              Current page: {page} of {pageCount}
+            </PaginationItem>
             <PaginationItem>
               <PaginationNext
                 className="cursor-pointer"
                 onClick={() => {
-                  if (page < Math.ceil(total / 10)) setPage(page + 1);
+                  if (page < pageCount) setPage(page + 1);
                 }}
               />
+            </PaginationItem>
+            <PaginationItem>
+              <PageJump page={page} pageCount={pageCount} onPageChange={setPage} disabled={loading} />
             </PaginationItem>
           </PaginationContent>
         </Pagination>

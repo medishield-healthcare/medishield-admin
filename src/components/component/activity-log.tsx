@@ -4,6 +4,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { Activity, Clock3, Eye, Loader2, RefreshCw, Search } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { PageJump } from "../ui/page-jump";
 import { Label } from "../ui/label";
 import { Badge } from "../ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
@@ -170,7 +171,16 @@ export function ActivityLog() {
               <TableCell><Button variant="ghost" size="icon" aria-label={`View details: ${entry.summary}`} onClick={() => setSelected(entry)}><Eye className="h-4 w-4" /></Button></TableCell>
             </TableRow>)}</TableBody>
           </Table>}
-        {!error && <div className="flex flex-wrap items-center justify-between gap-3 border-t px-4 py-4 sm:px-5"><p className="text-sm tabular-nums text-muted-foreground">Page {page} of {pages}</p><div className="flex gap-2"><Button variant="outline" size="sm" disabled={loading || page <= 1} onClick={() => setPage(value => value - 1)}>Previous</Button><Button variant="outline" size="sm" disabled={loading || page >= pages} onClick={() => setPage(value => value + 1)}>Next</Button></div></div>}
+        {!error && (
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t px-4 py-4 sm:px-5">
+            <p className="text-sm tabular-nums text-muted-foreground">Page {page} of {pages}</p>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button variant="outline" size="sm" disabled={loading || page <= 1} onClick={() => setPage(value => value - 1)}>Previous</Button>
+              <Button variant="outline" size="sm" disabled={loading || page >= pages} onClick={() => setPage(value => value + 1)}>Next</Button>
+              <PageJump page={page} pageCount={pages} onPageChange={setPage} disabled={loading} />
+            </div>
+          </div>
+        )}
       </section>
 
       <Dialog open={!!selected} onOpenChange={open => { if (!open) setSelected(null); }}>

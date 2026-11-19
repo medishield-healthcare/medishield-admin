@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { PageJump } from "@/components/ui/page-jump";
 
 import {
   Table,
@@ -160,7 +161,7 @@ export default function CouponTable({ data, columns, loading }: props) {
         </Table>
       </div>
       <div className="table-pagination justify-end">
-        <div className="space-x-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button
             variant="outline"
             size="sm"
@@ -177,6 +178,11 @@ export default function CouponTable({ data, columns, loading }: props) {
           >
             Next
           </Button>
+          <PageJump
+            page={table.getState().pagination.pageIndex + 1}
+            pageCount={table.getPageCount()}
+            onPageChange={(page) => table.setPageIndex(page - 1)}
+          />
         </div>
       </div>
     </div>

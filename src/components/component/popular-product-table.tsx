@@ -13,6 +13,7 @@ import {
 import { useRouter } from "next/navigation";
 import { ArrowUpDown, ChevronDown, MoreHorizontal, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { PageJump } from "@/components/ui/page-jump";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -178,7 +179,7 @@ export default function PopularProductTable({ data, columns, loading, embedded =
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="space-x-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button
             variant="outline"
             size="sm"
@@ -195,6 +196,11 @@ export default function PopularProductTable({ data, columns, loading, embedded =
           >
             Next
           </Button>
+          <PageJump
+            page={table.getState().pagination.pageIndex + 1}
+            pageCount={table.getPageCount()}
+            onPageChange={(page) => table.setPageIndex(page - 1)}
+          />
         </div>
       </div>
     </div>
