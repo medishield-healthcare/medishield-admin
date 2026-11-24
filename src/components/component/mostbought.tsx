@@ -131,7 +131,7 @@ export const popularcolumns: ColumnDef<PopularProducts>[] = [
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() =>
-                router.push(`/dashboard/products/${row.original.sku}`)
+                router.push(`/dashboard/products/${row.original._id}`)
               }
             >
               View Product
